@@ -1,34 +1,39 @@
-# 肉与便之恋 · 视觉小说版 v0.4
+# 肉与便之恋
 
-唯一公开网址：https://seanxhr137.github.io/after-class-demo/
+- [在线游玩](https://seanxhr137.github.io/after-class-demo/)
+- [剧情编辑教程](docs/剧情编辑教程.md)
+- [下载 PDF 教程](docs/剧情编辑教程.pdf)
+- [直接编辑剧情](https://github.com/seanxhr137/after-class-demo/edit/main/story.json)
 
-本版按用户确认的方向重做：主角显示在左侧，对话角色在右侧，当前说话者高亮。
-全屏场景、低矮半透明对话框、姓名牌、逐字显示、连续对白和内心独白。
-70 个台词节点，前 45 句连续阅读，一次关键选择，两段不同剧情与结尾。
-已删除资源、回合、商店与查房管理流程，不再从菜单反复选择行动。
+## 给剧情协作者
 
-## 试玩操作
+日常只需要修改 **story.json**。没有被所有者邀请的人不能直接改主分支；仓库公开不等于人人可写。
+所有者稍后提供 GitHub 用户名并邀请，受邀者接受后可以在网页中直接编辑、提交到 main。
+每次提交自动检查并构建。绿色成功后更新同一个网址；检查失败时线上保留上次成功版本。
+人物图片和配音等素材由所有者后续提供，当前不要改 actors 里的 image: null。
 
-点击场景或对话框继续；文字未显示完时先补全，再点才推进。
-Enter 继续，Space 隐藏或显示界面，Esc 设置。
-自动模式按文字长度停留，在选项前暂停；已读快进在未读台词和选项前停止。
-快存、快读、四个手动槽位、自动存档、历史和导入导出可用。
-手机横屏优先，竖屏也能完整阅读。
+## 给所有者
 
-这是临时原创短篇，之后换成用户提供的剧本。没有照抄参考视频对白。
-角色立绘与表情素材尚未提供，当前使用姓名占位牌，不是正式美术。
-背景沿用厦门六中历史照片。照片与剧情均不表示真实人物经历。
-音乐与配音尚未提供；脚本支持 voice、bgm，角色支持 image 和 expressions 映射。
-存档使用新的独立标识，旧版存档不导入，不删除旧浏览器记录。
+仓库 Settings > Collaborators > Add people，输入你允许的 GitHub 用户名，再发送邀请。
+个人仓库协作者写入权限覆盖整个仓库，不会只限于 story.json；只邀请你信任的人，不授予管理员权限。
+协作者名单尚未提供，目前仅 seanxhr137 有写权限。名单补充后可继续邀请。
 
-## 内容接入
+## 文件说明
 
-story.js 是创作源，actors 管理姓名、图像与表情映射；nodes 管理台词、背景、场景人物与分支。
-speaker 使用 me、tang、bai、thought（内心）、narration（旁白）。
-每句明确保存完整舞台配置，因此读取任意位置可恢复人物、表情、位置和背景。
-voice 是该句语音地址；bgm 是场景音乐地址。尚无音频素材，不能把音量设置误认为已配音。
+| 文件 | 用途 |
+| --- | --- |
+| story.json | 唯一剧情编辑源：角色、台词、场景和选项 |
+| docs/剧情编辑教程.md 与 PDF | 面向协作者的中文步骤 |
+| assets/ | 已有背景和后续正式素材 |
+| app.js、style.css、index.html | 游戏运行与界面源，剧情协作者一般不改 |
+| tools/check_story.py | 检查内容与素材引用 |
+| build.py | 生成发布用文件，默认输出 .pages-dist |
+| .github/workflows/publish.yml | 自动检查与 GitHub Pages 发布 |
 
-本地可运行 `python3 -m http.server 8780 --bind 127.0.0.1` 后访问 http://127.0.0.1:8780。
-故事检查命令：`node tests/story.test.cjs`。
-发布时使用带版本号的运行文件名，避免旧缓存把不同版本的页面与脚本混用。
-后续只推送 seanxhr137/after-class-demo 的 main，不再使用旧 Sites 托管。
+本地开发：先 `python3 build.py`，再 `python3 -m http.server 8780 --directory .pages-dist --bind 127.0.0.1`。
+检查：`python3 -m unittest discover -s tests -p 'test_*.py'`。
+index.html 是带资源占位符的入口模板；请预览构建后的 .pages-dist，不直接双击源码入口。
+运行文件由构建生成，协作者不需要维护重复的 story.js 或 vn-story 文件。
+只发布到 GitHub Pages；旧 chatgpt.site 已停止公开访问，不再使用。
+
+人物当前使用姓名占位牌，正式素材由用户提供。临时剧情和历史背景的来源见 ATTRIBUTION.md。

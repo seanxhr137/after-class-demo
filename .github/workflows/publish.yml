@@ -1,0 +1,38 @@
+name: Check story and publish game
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: game-pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate editable story
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Build standalone game
+        run: python3 build.py
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          path: .pages-dist
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: check-and-build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: publish
