@@ -1,4 +1,4 @@
-# 肉与便之恋
+# 肉と便の恋
 
 - [在线游玩](https://seanxhr137.github.io/after-class-demo/)
 - [剧情编辑教程](docs/剧情编辑教程.md)
